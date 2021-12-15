@@ -1,2 +1,0 @@
-yehia,P@ssw0rd123,22,M,635.0 
-joe,P@ssw0rd123,28,M,4000.0 
