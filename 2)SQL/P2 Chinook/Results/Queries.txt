@@ -1,0 +1,71 @@
+
+-----------------------------------------------------------
+# Question 1: Who is the best customer?
+
+SELECT c.FirstName First,
+	   c.LastName Last,
+       SUM(i.total) total
+FROM Customer c
+JOIN Invoice i ON c.CustomerId = i.CustomerId
+GROUP BY c.CustomerId
+ORDER BY total DESC
+LIMIT 5
+
+----------------------------------------------------------
+# Question 2: Who writes the most rock music?
+
+SELECT ar.Name,
+       COUNT(t.TrackId) Songs
+FROM Artist ar
+JOIN Album al ON ar.ArtistId = al.ArtistId
+JOIN Track t ON al.AlbumId = t.AlbumId
+JOIN Genre g ON t.GenreId = g.GenreId
+AND g.Name = 'Rock'
+GROUP BY ar.ArtistId
+ORDER BY Songs DESC
+LIMIT 10
+
+
+-----------------------------------------------------------
+# Question 3: The top artists according to invoice amounts 
+
+SELECT ar.Name,
+       SUM(il.UnitPrice * il.Quantity) AmountSpent
+FROM Artist ar
+JOIN Album al ON ar.ArtistId = al.ArtistId
+JOIN Track tr ON tr.AlbumId = al.AlbumId
+JOIN Genre g ON tr.GenreId = g.GenreId
+JOIN InvoiceLine il ON tr.TrackId = il.TrackId
+JOIN Invoice i ON i.InvoiceId = il.InvoiceId
+GROUP BY ar.Name
+ORDER BY AmountSpent DESC
+LIMIT 10
+
+
+-----------------------------------------------------------
+#Question 4: Find the top purchasers using invoice amount for the top Artist Iron Maiden.
+
+SELECT SUM(il.UnitPrice * il.Quantity) AmountSpent,
+       c.FirstName,
+       c.LastName
+FROM Artist ar
+JOIN Album al ON ar.ArtistId = al.ArtistId
+AND ar.Name = 'Iron Maiden'
+JOIN Track tr ON tr.AlbumId = al.AlbumId
+JOIN Genre g ON tr.GenreId = g.GenreId
+JOIN InvoiceLine il ON tr.TrackId = il.TrackId
+JOIN Invoice i ON i.InvoiceId = il.InvoiceId
+JOIN Customer c ON i.CustomerId = c.CustomerId
+GROUP BY c.CustomerId
+ORDER BY AmountSpent DESC
+LIMIT 10
+
+
+
+
+
+
+
+
+
+
